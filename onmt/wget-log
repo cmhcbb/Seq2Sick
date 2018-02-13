@@ -1,0 +1,21 @@
+--2017-12-26 16:31:11--  https://doc-10-bs-docs.googleusercontent.com/docs/securesc/6eb4r28a263lcg8t71va5ptemmjhbgum/1ofmq63800s97apb1s7jjohil2rvsnpr/1514332800000/03129501499031348422/00215590170767626792/0B6N7tANPyVeBWE9WazRYaUd2QTg?e=download
+Resolving doc-10-bs-docs.googleusercontent.com (doc-10-bs-docs.googleusercontent.com)... 216.58.195.65, 2607:f8b0:4005:80a::2001
+Connecting to doc-10-bs-docs.googleusercontent.com (doc-10-bs-docs.googleusercontent.com)|216.58.195.65|:443... connected.
+HTTP request sent, awaiting response... 302 Found
+Location: https://docs.google.com/nonceSigner?nonce=o5ftkaphq2a1i&continue=https://doc-10-bs-docs.googleusercontent.com/docs/securesc/6eb4r28a263lcg8t71va5ptemmjhbgum/1ofmq63800s97apb1s7jjohil2rvsnpr/1514332800000/03129501499031348422/00215590170767626792/0B6N7tANPyVeBWE9WazRYaUd2QTg?e%3Ddownload&hash=skoglvlkiejgkdnihnogrdna8hcl6gb0 [following]
+--2017-12-26 16:31:11--  https://docs.google.com/nonceSigner?nonce=o5ftkaphq2a1i&continue=https://doc-10-bs-docs.googleusercontent.com/docs/securesc/6eb4r28a263lcg8t71va5ptemmjhbgum/1ofmq63800s97apb1s7jjohil2rvsnpr/1514332800000/03129501499031348422/00215590170767626792/0B6N7tANPyVeBWE9WazRYaUd2QTg?e%3Ddownload&hash=skoglvlkiejgkdnihnogrdna8hcl6gb0
+Resolving docs.google.com (docs.google.com)... 216.58.194.174, 2607:f8b0:4005:807::200e
+Connecting to docs.google.com (docs.google.com)|216.58.194.174|:443... connected.
+HTTP request sent, awaiting response... 302 Moved Temporarily
+Location: https://accounts.google.com/ServiceLogin?service=wise&passive=1209600&continue=https://docs.google.com/nonceSigner?nonce%3Do5ftkaphq2a1i%26continue%3Dhttps://doc-10-bs-docs.googleusercontent.com/docs/securesc/6eb4r28a263lcg8t71va5ptemmjhbgum/1ofmq63800s97apb1s7jjohil2rvsnpr/1514332800000/03129501499031348422/00215590170767626792/0B6N7tANPyVeBWE9WazRYaUd2QTg?e%253Ddownload%26hash%3Dskoglvlkiejgkdnihnogrdna8hcl6gb0&followup=https://docs.google.com/nonceSigner?nonce%3Do5ftkaphq2a1i%26continue%3Dhttps://doc-10-bs-docs.googleusercontent.com/docs/securesc/6eb4r28a263lcg8t71va5ptemmjhbgum/1ofmq63800s97apb1s7jjohil2rvsnpr/1514332800000/03129501499031348422/00215590170767626792/0B6N7tANPyVeBWE9WazRYaUd2QTg?e%253Ddownload%26hash%3Dskoglvlkiejgkdnihnogrdna8hcl6gb0&ltmpl=homepage [following]
+--2017-12-26 16:31:11--  https://accounts.google.com/ServiceLogin?service=wise&passive=1209600&continue=https://docs.google.com/nonceSigner?nonce%3Do5ftkaphq2a1i%26continue%3Dhttps://doc-10-bs-docs.googleusercontent.com/docs/securesc/6eb4r28a263lcg8t71va5ptemmjhbgum/1ofmq63800s97apb1s7jjohil2rvsnpr/1514332800000/03129501499031348422/00215590170767626792/0B6N7tANPyVeBWE9WazRYaUd2QTg?e%253Ddownload%26hash%3Dskoglvlkiejgkdnihnogrdna8hcl6gb0&followup=https://docs.google.com/nonceSigner?nonce%3Do5ftkaphq2a1i%26continue%3Dhttps://doc-10-bs-docs.googleusercontent.com/docs/securesc/6eb4r28a263lcg8t71va5ptemmjhbgum/1ofmq63800s97apb1s7jjohil2rvsnpr/1514332800000/03129501499031348422/00215590170767626792/0B6N7tANPyVeBWE9WazRYaUd2QTg?e%253Ddownload%26hash%3Dskoglvlkiejgkdnihnogrdna8hcl6gb0&ltmpl=homepage
+Resolving accounts.google.com (accounts.google.com)... 172.217.6.77, 2607:f8b0:4005:804::200d
+Connecting to accounts.google.com (accounts.google.com)|172.217.6.77|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [text/html]
+Saving to: ‘0B6N7tANPyVeBWE9WazRYaUd2QTg?e=download’
+
+0B6N7tANPyVeBWE9WazRYaUd2QTg?e=dow     [<=>                                                           ]       0  --.-KB/s               0B6N7tANPyVeBWE9WazRYaUd2QTg?e=dow     [ <=>                                                          ]  57.82K  --.-KB/s    in 0.04s   
+
+2017-12-26 16:31:12 (1.61 MB/s) - ‘0B6N7tANPyVeBWE9WazRYaUd2QTg?e=download’ saved [59208]
+
