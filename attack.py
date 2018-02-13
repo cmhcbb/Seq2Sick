@@ -143,11 +143,13 @@ def main():
     opt.cuda = opt.gpu > -1
     if opt.cuda:
         torch.cuda.set_device(opt.gpu)
-    print(opt)
+    #print(opt)
     # Load the model.
     fields, model, model_opt = \
         onmt.ModelConstructor.load_test_model(opt, dummy_opt.__dict__)
-    print(model_opt)
+    #print(model_opt)
+    n_src = len(fields['src'].vocab) 
+    n_tgt = len(fields['tgt'].vocab)
     # File to write sentences to.
     out_file = codecs.open(opt.output, 'w', 'utf-8')
 
@@ -163,7 +165,7 @@ def main():
 
     test_data = onmt.io.OrderedIterator(
         dataset=data, device=opt.gpu,
-        batch_size=opt.batch_size, train=False, sort=False,
+        batch_size=1, train=False, sort=False,
         shuffle=False)
 
     # Translator
@@ -184,10 +186,7 @@ def main():
     counter = count(1)
     pred_score_total, pred_words_total = 0, 0
     gold_score_total, gold_words_total = 0, 0
-    ##############################################
-    #minhao
-    ##############################################
-    #counter = count(1)
+    
     pdist = nn.PairwiseDistance(p=2)
     if opt.tar_dir:
         TARGETED = True
@@ -209,14 +208,13 @@ def main():
                                  use_filter_pred=False)
         tar_data = onmt.io.OrderedIterator(
             dataset=tar, device=opt.gpu,
-            batch_size=opt.batch_size, train=False, sort=False,
+            batch_size=1, train=False, sort=False,
             shuffle=False)
     
-    all_index = Variable(torch.LongTensor(range(50002)).view(50002,1,1).cuda())
+    all_index = Variable(torch.LongTensor(range(n_src)).view(n_src,1,1).cuda())
     all_word_embedding, _ = translator.getEmbedding(all_index, FLAG=False)
  
     for batch in test_data: 
-        print("--batch begins--")
         batch_data = translator.translate_batch(batch, data)
         predBatch = batch_data["predictions"]
         translations = builder.from_batch(batch_data)
@@ -232,8 +230,7 @@ def main():
             label_data = translator.translate_batch(batch, data)
             pred = label_data["predictions"]
             true_label=torch.LongTensor(pred[0][0]).view(-1,1)
-        n_class = 50004   # need to be adjust      
-        label_onehot = torch.FloatTensor(true_label.size()[0], n_class)
+        label_onehot = torch.FloatTensor(true_label.size()[0], n_tgt)
         label_onehot.zero_()
         label_onehot.scatter_(1,true_label,1)
         if TARGETED:
@@ -257,10 +254,6 @@ def main():
         
         print(words_list)
         new_embedding = input_embedding.clone()
-        #if not GROUP_LASSO:
-        #    for i,v in enumerate(changed_index):
-        #        new_embedding[v] = modifier[i] + input_embedding[v]
-        #else:
         new_embedding = modifier + input_embedding
         if NN:
             changed_words=[]
