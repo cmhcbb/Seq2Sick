@@ -31,6 +31,8 @@ def attack(all_word_embedding, label_onehot, translator, src, batch, new_embeddi
         lr_a = [5,10]
     else:
         lr_a = [2]
+    if NN:
+        lr_a= [0.1] 
     cur_best = Variable(torch.zeros(1)).cuda()
     cur_best.data[0] = 999
 #    FLAG = False
@@ -44,7 +46,7 @@ def attack(all_word_embedding, label_onehot, translator, src, batch, new_embeddi
             loss2 = Variable(torch.zeros(1)).cuda()
             if NN:
                 for i in range(input_embedding.size()[0]):
-                    new_mebedding[i] = modifier[i] + input_embedding[i]
+                    new_embedding[i] = modifier[i] + input_embedding[i]
             else:
                 for i in range(input_embedding.size()[0]):
                     new_embedding[i] = modifier[i] + input_embedding[i]
@@ -93,11 +95,12 @@ def attack(all_word_embedding, label_onehot, translator, src, batch, new_embeddi
                 other, otheri = torch.max(torch.mul(output_a, (1-label_onehot)),1)
                 loss1 = torch.sum(torch.clamp(real-other,min=0))            
     
+            print(loss1.data[0],"\t", torch.norm(modifier.data))
             if loss1.data[0]<= 0 :
-                print(loss1.data[0],"\t", torch.norm(modifier.data))
+                #print(loss1.data[0],"\t", torch.norm(modifier.data))
                 break
             if loss1.data[0] < cur_best.data[0]:
-                print(cur_best.data[0],"\t", torch.norm(modifier.data))
+                #print(cur_best.data[0],"\t", torch.norm(modifier.data))
                 cur_best = loss1.clone()
                 best_word = new_word_list
                 best_output_a = output_a.clone()
@@ -257,7 +260,7 @@ def main():
         new_embedding = modifier + input_embedding
         if NN:
             changed_words=[]
-            for i,index in enumerate(changed_index):
+            for i in range(input_embedding.size()[0]):
                 dis = []
                 for dic_embedding_index in range(all_word_embedding.size()[0]):
                     #if dic_embedding_index == src.data[index][0][0]:
