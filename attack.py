@@ -28,13 +28,14 @@ opt = parser.parse_args()
 
 def attack(all_word_embedding, label_onehot, translator, src, batch, new_embedding, input_embedding, modifier, const, GROUP_LASSO, TARGETED, GRAD_REG, NN):
     if TARGETED:
-        lr_a = [5,10]
+        lr_a = [0.5,1]
     else:
         lr_a = [2]
     if NN:
         lr_a= [0.1] 
     cur_best = Variable(torch.zeros(1)).cuda()
     cur_best.data[0] = 999
+    cur_best_modi = 999
 #    FLAG = False
     m = label_onehot.size()[0]
     for lr in lr_a:
@@ -95,12 +96,20 @@ def attack(all_word_embedding, label_onehot, translator, src, batch, new_embeddi
                 other, otheri = torch.max(torch.mul(output_a, (1-label_onehot)),1)
                 loss1 = torch.sum(torch.clamp(real-other,min=0))            
     
-            print(loss1.data[0],"\t", torch.norm(modifier.data))
+            #print(loss1.data[0],"\t", torch.norm(modifier.data))
             if loss1.data[0]<= 0 :
                 #print(loss1.data[0],"\t", torch.norm(modifier.data))
-                break
+                if torch.norm(modifier.data) < cur_best_modi:
+                    print(loss1.data[0],"\t", torch.norm(modifier.data))
+                    cur_best_modi = torch.norm(modifier.data)
+                    best_word = new_word_list
+                    best_output_a = output_a.clone()
+                    best_attn = attn
+                    best_output_i = output_i.clone()
+#               
+                #break
             if loss1.data[0] < cur_best.data[0]:
-                #print(cur_best.data[0],"\t", torch.norm(modifier.data))
+                print(cur_best.data[0],"\t", torch.norm(modifier.data))
                 cur_best = loss1.clone()
                 best_word = new_word_list
                 best_output_a = output_a.clone()
@@ -115,6 +124,8 @@ def attack(all_word_embedding, label_onehot, translator, src, batch, new_embeddi
                 output_a = best_output_a
                 attn = best_attn
                 output_i = best_output_i
+                if cur_best.data[0] <= 0:
+                    break
                 CFLAG = False
                 print("lr=",lr)
             loss2 = torch.max(modifier)
@@ -131,7 +142,8 @@ def attack(all_word_embedding, label_onehot, translator, src, batch, new_embeddi
                 for j in range(input_embedding.size()[0]):
                     if l2dist.data[j][0] > gamma * const:
                         modifier.data[j] = modifier.data[j] - gamma*const* modifier.data[j]/l2dist.data[j][0]
-
+                    else:
+                        modifier.data[j] = torch.zeros(1,500).cuda()
             modifier.grad.data.zero_()    
         if CFLAG:
             break
@@ -198,7 +210,7 @@ def main():
     GROUP_LASSO = opt.gl
     GRAD_REG = opt.gr
     NN = opt.nn
-    const = 1
+    const = 10
     if TARGETED:
         targets_list = []
         tar = onmt.io.build_dataset(fields, opt.data_type,
