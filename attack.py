@@ -28,7 +28,7 @@ opt = parser.parse_args()
 
 def attack(all_word_embedding, label_onehot, translator, src, batch, new_embedding, input_embedding, modifier, const, GROUP_LASSO, TARGETED, GRAD_REG, NN):
     if TARGETED:
-        lr_a = [0.5,1]
+        lr_a = [0.1,0.5]
     else:
         lr_a = [2]
     if NN:
@@ -96,7 +96,7 @@ def attack(all_word_embedding, label_onehot, translator, src, batch, new_embeddi
                 other, otheri = torch.max(torch.mul(output_a, (1-label_onehot)),1)
                 loss1 = torch.sum(torch.clamp(real-other,min=0))            
     
-            #print(loss1.data[0],"\t", torch.norm(modifier.data))
+            print(loss1.data[0],"\t", torch.norm(modifier.data))
             if loss1.data[0]<= 0 :
                 #print(loss1.data[0],"\t", torch.norm(modifier.data))
                 if torch.norm(modifier.data) < cur_best_modi:
@@ -130,21 +130,26 @@ def attack(all_word_embedding, label_onehot, translator, src, batch, new_embeddi
                 print("lr=",lr)
             loss2 = torch.max(modifier)
             #loss2 = torch.sum(modifier * modifier)
+            #print(loss2.data[0])
             if GRAD_REG:
                 loss = const * loss1 + min_dist + loss2
             else:
                 loss = const * loss1 + loss2
             loss.backward(retain_graph=True)
-            modifier.data -= lr * modifier.grad.data
+            #modifier.data -= lr * modifier.grad.data
             if GROUP_LASSO:
                 gamma = lr 
                 l2dist = torch.norm(modifier, 2, 2)
+                lidist,_ = torch.max(modifier,2)
+                #print(lidist)
                 for j in range(input_embedding.size()[0]):
                     if l2dist.data[j][0] > gamma * const:
                         modifier.data[j] = modifier.data[j] - gamma*const* modifier.data[j]/l2dist.data[j][0]
                     else:
                         modifier.data[j] = torch.zeros(1,500).cuda()
-            modifier.grad.data.zero_()    
+            modifier.data -= lr * modifier.grad.data
+            modifier.grad.data.zero_()   
+
         if CFLAG:
             break
     return modifier, output_a, attn, new_word_list, output_i, CFLAG
@@ -210,7 +215,7 @@ def main():
     GROUP_LASSO = opt.gl
     GRAD_REG = opt.gr
     NN = opt.nn
-    const = 10
+    const = 1
     if TARGETED:
         targets_list = []
         tar = onmt.io.build_dataset(fields, opt.data_type,
